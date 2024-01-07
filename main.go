@@ -23,7 +23,6 @@ func Health(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(response)
-
 }
 
 func main() {
