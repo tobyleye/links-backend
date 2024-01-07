@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -37,12 +38,20 @@ func main() {
 	router.Get("/profile", ReadProfile)
 	router.Patch("/profile/update", UpdateProfile)
 
-	server := http.Server{
-		Handler: router,
-		Addr:    ":8081",
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "8081"
 	}
 
+	server := http.Server{
+		Handler: router,
+		Addr:    ":" + port,
+	}
+	fmt.Printf("Server is running on %s\n", port)
+
 	err := server.ListenAndServe()
+
 	if err != nil {
 		log.Fatal(err)
 	}
