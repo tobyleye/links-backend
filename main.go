@@ -32,8 +32,8 @@ func main() {
 	router.Get("/health", Health)
 	router.Post("/login", HandleLogin)
 	router.Post("/register", HandleRegister)
-	router.Post("/create-links", CreateLinks)
-	router.Get("/list-links", ListLinks)
+	router.Post("/links/create", CreateLinks)
+	router.Get("/links/list", ListLinks)
 	router.Get("/profile", ReadProfile)
 	router.Patch("/profile/update", UpdateProfile)
 
