@@ -25,10 +25,19 @@ func Health(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
+func enableCors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	fmt.Println("Hello, welcome to links backend")
 
 	router := chi.NewRouter()
+	router.Use(enableCors)
+
 	router.Get("/health", Health)
 	router.Post("/login", HandleLogin)
 	router.Post("/register", HandleRegister)
