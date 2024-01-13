@@ -27,7 +27,22 @@ func Health(w http.ResponseWriter, r *http.Request) {
 
 func enableCors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Set CORS headers
+		// Allow any origin
 		w.Header().Set("Access-Control-Allow-Origin", "*")
+		// Allow all methods
+		w.Header().Set("Access-Control-Allow-Methods", "*")
+
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		if r.Method == http.MethodOptions {
+			// Handle preflight requests here
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Allow specified headers
+
 		next.ServeHTTP(w, r)
 	})
 }
@@ -36,8 +51,8 @@ func main() {
 	fmt.Println("Hello, welcome to links backend")
 
 	router := chi.NewRouter()
-	router.Use(enableCors)
 
+	router.Use(enableCors)
 	router.Get("/health", Health)
 	router.Post("/login", HandleLogin)
 	router.Post("/register", HandleRegister)
